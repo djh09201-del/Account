@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Ebirr</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #111;
+  color: white;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.phone {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  background: #f4f4f4;
+  color: #222;
+  padding: 20px;
+}
+
+.demo {
+  background: #fff3cd;
+  color: #856404;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.screen {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  min-height: 430px;
+  box-shadow: 0 4px 15px #0002;
+}
+
+h2 {
+  text-align: center;
+}
+
+p {
+  line-height: 1.5;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+.hidden {
+  display: none;
+}
+
+.success {
+  text-align: center;
+  padding: 25px 10px;
+}
+
+.success-icon {
+  font-size: 55px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+
+  <div class="demo">
+   Ebirr PAYMENT
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="screen" id="step1">
+    <h2>Payment Ebirr</h2>
+    <p>Enter Ebirr PIN</p>
+
+    <input
+      id="pin"
+      type="password"
+      maxlength="4"
+      placeholder="Ebirr PIN"
+    >
+
+    <button onclick="nextStep(1)">
+      Continue
+    </button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="screen hidden" id="step2">
+    <h2>Menu</h2>
+
+    <p>Select an option:</p>
+
+    <button onclick="nextStep(2)">
+      1. Send Ebirr Payment
+    </button>
+
+    <button onclick="resetEbirr()">
+      Cancel
+    </button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="screen hidden" id="step3">
+    <h2>Send Ebirr Payment</h2>
+
+    <p>Enter recipient number:</p>
+
+    <input
+      id="number"
+      type="tel"
+      placeholder="Recipient number"
+    >
+
+    <button onclick="nextStep(3)">
+      Continue
+    </button>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="screen hidden" id="step4">
+    <h2>Amount</h2>
+
+    <input
+      id="amount"
+      type="number"
+      placeholder="Enter amount"
+    >
+
+    <button onclick="nextStep(4)">
+      Continue
+    </button>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="screen hidden" id="step5">
+    <h2>Reason</h2>
+
+    <input
+      id="reason"
+      type="text"
+      placeholder="Payment reason"
+    >
+
+    <button onclick="nextStep(5)">
+      Continue
+    </button>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="screen hidden" id="step6">
+    <h2>Confirm Ebirr</h2>
+
+    <p><b>Recipient:</b> <span id="showNumber"></span></p>
+    <p><b>Amount:</b> <span id="showAmount"></span></p>
+    <p><b>Reason:</b> <span id="showReason"></span></p>
+
+    <button onclick="finishPayment()">
+      1. Complete Ebirr Payment
+    </button>
+
+    <button onclick="resetEbirr()">
+      Cancel
+    </button>
+  </div>
+
+  <!-- FINAL -->
+  <div class="screen hidden" id="step7">
+    <div class="success">
+      <div class="success-icon">✓</div>
+
+      <h2>Ebirr Payment Completed</h2>
+
+      <p>
+        This sent money 
+      
+      </p>
+
+      <p><b>Recipient:</b> <span id="finalNumber"></span></p>
+      <p><b>Amount:</b> <span id="finalAmount"></span></p>
+
+      <button onclick="resetEbirr()">
+        Start Again
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function hideAll() {
+  for (let i = 1; i <= 7; i++) {
+    document.getElementById("step" + i)
+      .classList.add("hidden");
+  }
+}
+
+function nextStep(step) {
+
+  if (step === 1) {
+    let pin = document.getElementById("pin").value;
+
+    if (!pin) {
+      alert("Enter a Ebirr PIN");
+      return;
+    }
+
+    hideAll();
+    document.getElementById("step2")
+      .classList.remove("hidden");
+  }
+
+  else if (step === 2) {
+    hideAll();
+    document.getElementById("step3")
+      .classList.remove("hidden");
+  }
+
+  else if (step === 3) {
+    let number = document.getElementById("number").value;
+
+    if (!number) {
+      alert("Enter a recipient number");
+      return;
+    }
+
+    hideAll();
+    document.getElementById("step4")
+      .classList.remove("hidden");
+  }
+
+  else if (step === 4) {
+    let amount = document.getElementById("amount").value;
+
+    if (!amount || amount <= 0) {
+      alert("Enter an amount");
+      return;
+    }
+
+    hideAll();
+    document.getElementById("step5")
+      .classList.remove("hidden");
+  }
+
+  else if (step === 5) {
+    let reason = document.getElementById("reason").value;
+
+    if (!reason) {
+      alert("Enter a reason");
+      return;
+    }
+
+    document.getElementById("showNumber").textContent =
+      document.getElementById("number").value;
+
+    document.getElementById("showAmount").textContent =
+      document.getElementById("amount").value;
+
+    document.getElementById("showReason").textContent =
+      reason;
+
+    hideAll();
+    document.getElementById("step6")
+      .classList.remove("hidden");
+  }
+}
+
+function finishPayment() {
+
+  document.getElementById("finalNumber").textContent =
+    document.getElementById("number").value;
+
+  document.getElementById("finalAmount").textContent =
+    document.getElementById("amount").value;
+
+  hideAll();
+
+  document.getElementById("step7")
+    .classList.remove("hidden");
+}
+
+function resetEbirr() {
+  location.reload();
+}
+</script>
+
+</body>
+</html>
